@@ -25,13 +25,21 @@ pub struct EnemyBundle {
 }
 
 fn spawn_enemies(mut commands: Commands, textures: Res<TextureAssets>) {
+    // TODO: replace that with GameArea asset or sth
+    let game_area_size = Vec2::new(300., 600.);
+    let x_change = (game_area_size.x - 50.) / 3.;
+
     // TODO: Think how to implement logic that spawns waves or somtehing
-    for i in 0..3 {
+    for i in -1..2 {
         commands.spawn_bundle(EnemyBundle {
             sprite_bundle: SpriteBundle {
                 texture: textures.texture_bevy.clone(),
-                transform: Transform::from_translation(Vec3::new(i as f32 * 80., 580., 1.))
-                    .with_scale(Vec3::new(0.2, 0.2, 1.)),
+                transform: Transform::from_translation(Vec3::new(
+                    i as f32 * x_change + 50.,
+                    500.,
+                    1.,
+                ))
+                .with_scale(Vec3::new(0.2, 0.2, 1.)),
                 ..default()
             },
             move_speed: MoveSpeed(150.),
