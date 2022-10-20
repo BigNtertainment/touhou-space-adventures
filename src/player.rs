@@ -56,7 +56,7 @@ struct PlayerBundle {
 
 impl Default for PlayerBundle {
     fn default() -> Self {
-        let shooting_timer = ShootingTimer(Timer::new(Duration::from_millis(100), false));
+        let shooting_timer = ShootingTimer(Timer::new(Duration::from_millis(300), false));
 
         Self {
             sprite_bundle: SpriteBundle {
@@ -120,10 +120,9 @@ fn move_player(
 fn shoot(
     mut player_query: Query<(&mut ShootingTimer, &Transform), With<Player>>,
     mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
     actions: Res<Actions>,
     time: Res<Time>,
+    textures: Res<TextureAssets>,
 ) {
     let (mut shooting_timer, player_transform) = player_query.single_mut();
 
@@ -132,11 +131,9 @@ fn shoot(
     if actions.player_shooting {
         if shooting_timer.0.finished() {
             commands.spawn_bundle(BulletBundle {
-                mesh: MaterialMesh2dBundle {
-                    mesh: meshes.add(Mesh::from(shape::Quad::default())).into(),
-                    transform: Transform::from_translation(player_transform.translation)
-                        .with_scale(Vec3::splat(10.)),
-                    material: materials.add(ColorMaterial::from(Color::YELLOW)),
+                sprite: SpriteBundle {
+                    transform: Transform::from_translation(player_transform.translation),
+                    texture: textures.bullet.clone(),
                     ..default()
                 },
                 ..default()

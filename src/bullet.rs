@@ -23,7 +23,7 @@ pub struct Bullet;
 #[derive(Bundle)]
 pub struct BulletBundle {
     #[bundle]
-    pub mesh: MaterialMesh2dBundle<ColorMaterial>,
+    pub sprite: SpriteBundle,
     pub bullet: Bullet,
     pub move_speed: MoveSpeed,
 }
@@ -31,7 +31,7 @@ pub struct BulletBundle {
 impl Default for BulletBundle {
     fn default() -> Self {
         Self {
-            mesh: MaterialMesh2dBundle::default(),
+            sprite: SpriteBundle::default(),
             bullet: Bullet,
             move_speed: MoveSpeed(500.),
         }
