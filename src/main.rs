@@ -5,8 +5,8 @@ use bevy::prelude::{App, ClearColor, Color, Msaa, NonSend, WindowDescriptor};
 use bevy::window::WindowId;
 use bevy::winit::WinitWindows;
 use bevy::DefaultPlugins;
-use touhou_space_adventures::GamePlugin;
 use std::io::Cursor;
+use touhou_space_adventures::GamePlugin;
 use winit::window::Icon;
 
 fn main() {

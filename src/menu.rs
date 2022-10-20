@@ -2,6 +2,12 @@ use crate::loading::FontAssets;
 use crate::GameState;
 use bevy::prelude::*;
 
+#[derive(Component)]
+struct MainMenuUI;
+
+#[derive(Component)]
+struct PlayButton;
+
 pub struct MenuPlugin;
 
 /// This plugin is responsible for the game menu (containing only one button...)
@@ -35,33 +41,69 @@ fn setup_menu(
     button_colors: Res<ButtonColors>,
 ) {
     commands.spawn_bundle(Camera2dBundle::default());
+
     commands
-        .spawn_bundle(ButtonBundle {
+        .spawn_bundle(NodeBundle {
             style: Style {
-                size: Size::new(Val::Px(120.0), Val::Px(50.0)),
-                margin: UiRect::all(Val::Auto),
+                size: Size::new(Val::Percent(100.0), Val::Percent(100.0)),
                 justify_content: JustifyContent::Center,
                 align_items: AlignItems::Center,
+                flex_direction: FlexDirection::ColumnReverse,
                 ..Default::default()
             },
-            color: button_colors.normal,
+            color: UiColor(Color::BLACK),
             ..Default::default()
         })
+        .insert(MainMenuUI)
+        .insert(Name::new("Ui"))
         .with_children(|parent| {
+
+            // title text
             parent.spawn_bundle(TextBundle {
                 text: Text {
                     sections: vec![TextSection {
-                        value: "Play".to_string(),
+                        value: "Touhou Space Adventures".to_string(),
                         style: TextStyle {
-                            font: font_assets.fira_sans.clone(),
-                            font_size: 40.0,
-                            color: Color::rgb(0.9, 0.9, 0.9),
+                            font: font_assets.silk.clone(),
+                            font_size: 96.0,
+                            color: Color::rgb(1.0, 1.0, 1.0),
                         },
                     }],
                     alignment: Default::default(),
                 },
                 ..Default::default()
             });
+
+            // play button
+            parent.spawn_bundle(ButtonBundle {
+                style: Style {
+                    size: Size::new(Val::Px(120.0), Val::Px(50.0)),
+                    margin: UiRect::all(Val::Auto),
+                    justify_content: JustifyContent::Center,
+                    align_items: AlignItems::Center,
+                    ..Default::default()
+                },
+                color: button_colors.normal,
+                ..Default::default()
+            })
+            .insert(PlayButton)
+            .with_children(|parent| {
+                parent.spawn_bundle(TextBundle {
+                    text: Text {
+                        sections: vec![TextSection {
+                            value: "Play".to_string(),
+                            style: TextStyle {
+                                font: font_assets.silk_bold.clone(),
+                                font_size: 40.0,
+                                color: Color::rgb(0.9, 0.9, 0.9),
+                            },
+                        }],
+                        alignment: Default::default(),
+                    },
+                    ..Default::default()
+                });
+            });
+
         });
 }
 
@@ -70,7 +112,7 @@ fn click_play_button(
     mut state: ResMut<State<GameState>>,
     mut interaction_query: Query<
         (&Interaction, &mut UiColor),
-        (Changed<Interaction>, With<Button>),
+        (Changed<Interaction>, With<PlayButton>),
     >,
 ) {
     for (interaction, mut color) in &mut interaction_query {
@@ -88,6 +130,6 @@ fn click_play_button(
     }
 }
 
-fn cleanup_menu(mut commands: Commands, button: Query<Entity, With<Button>>) {
-    commands.entity(button.single()).despawn_recursive();
+fn cleanup_menu(mut commands: Commands, UI: Query<Entity, With<MainMenuUI>>) {
+    commands.entity(UI.single()).despawn_recursive();
 }
