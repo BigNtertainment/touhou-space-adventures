@@ -1,4 +1,5 @@
 use crate::game_area::GameArea;
+use crate::score::Score;
 use crate::GameState;
 use crate::{character::MoveSpeed, enemy::Enemy};
 use bevy::sprite::collide_aabb::collide;
@@ -56,6 +57,7 @@ fn kill_enemy(
     mut commands: Commands,
     bullet_query: Query<(Entity, &Transform), With<Bullet>>,
     enemies_query: Query<(&Transform, Entity), With<Enemy>>,
+    mut score: ResMut<Score>,
 ) {
     for (bullet_entity, bullet_transform) in &bullet_query {
         for (enemy_transform, enemy_entity) in &enemies_query {
@@ -67,6 +69,7 @@ fn kill_enemy(
             )
             .is_some()
             {
+                score.add_to_score(100);
                 commands.entity(enemy_entity).despawn_recursive();
                 commands.entity(bullet_entity).despawn_recursive();
             }

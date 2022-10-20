@@ -143,6 +143,7 @@ fn shoot(
 fn die(
     player_query: Query<&Transform, With<Player>>,
     enemies_query: Query<&Transform, With<Enemy>>,
+    mut state: ResMut<State<GameState>>,
 ) {
     let player_transform = player_query.single();
 
@@ -155,7 +156,7 @@ fn die(
         )
         .is_some()
         {
-            println!("Player is dead");
+            let _ = state.set(GameState::GameOver);
             break;
         }
     }
