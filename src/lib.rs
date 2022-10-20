@@ -7,6 +7,7 @@ mod game_area;
 mod loading;
 mod menu;
 mod player;
+mod waves;
 
 use actions::ActionsPlugin;
 use audio::InternalAudioPlugin;
@@ -25,6 +26,7 @@ use bevy::app::App;
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
+use waves::WavesPlugin;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -51,6 +53,7 @@ impl Plugin for GamePlugin {
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)
             .add_plugin(EnemyPlugin)
+            .add_plugin(WavesPlugin)
             .add_plugin(PlayerPlugin)
             .add_plugin(BackgroundPlugin);
 

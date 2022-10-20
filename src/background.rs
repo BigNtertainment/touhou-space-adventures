@@ -1,4 +1,4 @@
-use crate::{game_area::GameArea, GameState};
+use crate::GameState;
 use bevy::prelude::*;
 
 pub struct BackgroundPlugin;
@@ -9,8 +9,7 @@ impl Plugin for BackgroundPlugin {
     }
 }
 
-fn create_background(
-    // mut commands: Commands,
+fn create_background(// mut commands: Commands,
     // mut meshes: ResMut<Assets<Mesh>>,
     // mut materials: ResMut<Assets<ColorMaterial>>,
     // game_area: Res<GameArea>,

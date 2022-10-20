@@ -31,6 +31,10 @@ impl GameArea {
     pub fn physical_pos(&self) -> Vec2 {
         self.position * Vec2::new(WIDTH, HEIGHT)
     }
+
+    pub fn relative_to_absolute(&self, relative: Vec2) -> Vec2 {
+        relative * Vec2::new(self.width, self.height) + self.physical_pos()
+    }
 }
 
 fn register_game_area(mut commands: Commands) {
