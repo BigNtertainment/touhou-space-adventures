@@ -1,22 +1,28 @@
 mod actions;
 mod audio;
 mod background;
+mod bullet;
 mod character;
+mod debug;
 mod enemy;
 mod game_area;
 mod loading;
 mod menu;
 mod player;
 mod waves;
+mod score;
 
-use actions::ActionsPlugin;
-use audio::InternalAudioPlugin;
+use crate::actions::ActionsPlugin;
+use crate::audio::InternalAudioPlugin;
+use crate::debug::DebugPlugin;
+use crate::loading::LoadingPlugin;
+use crate::menu::MenuPlugin;
+use crate::player::PlayerPlugin;
+use crate::score::ScorePlugin;
 use background::BackgroundPlugin;
+use bullet::BulletPlugin;
 use enemy::EnemyPlugin;
 use game_area::GameAreaPlugin;
-use loading::LoadingPlugin;
-use menu::MenuPlugin;
-use player::PlayerPlugin;
 
 pub const WIDTH: f32 = 1280.;
 pub const HEIGHT: f32 = 720.;
@@ -52,10 +58,13 @@ impl Plugin for GamePlugin {
             .add_plugin(MenuPlugin)
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)
+            .add_plugin(DebugPlugin)
+            .add_plugin(ScorePlugin)
             .add_plugin(EnemyPlugin)
             .add_plugin(WavesPlugin)
             .add_plugin(PlayerPlugin)
-            .add_plugin(BackgroundPlugin);
+            .add_plugin(BackgroundPlugin)
+            .add_plugin(BulletPlugin);
 
         #[cfg(debug_assertions)]
         {

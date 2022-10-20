@@ -1,16 +1,24 @@
+use std::time::Duration;
+
 use crate::actions::Actions;
+use crate::bullet::{Bullet, BulletBundle};
+use crate::character::MoveSpeed;
 use crate::enemy::Enemy;
 use crate::game_area::{GameArea, GameAreaBound, GameAreaBoundLabel};
 use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::prelude::*;
 use bevy::sprite::collide_aabb::collide;
+use bevy::sprite::MaterialMesh2dBundle;
 use bevy_rapier2d::prelude::Collider;
 
 pub struct PlayerPlugin;
 
 #[derive(Component, Default)]
 pub struct Player;
+
+#[derive(Component)]
+pub struct ShootingTimer(Timer);
 
 #[derive(Component, Default)]
 pub struct Speed(f32);
@@ -26,6 +34,12 @@ impl Plugin for PlayerPlugin {
                     .with_system(die)
                     .before(GameAreaBoundLabel),
             )
+            .add_system_set(
+                SystemSet::on_update(GameState::Playing)
+                    .with_system(move_player)
+                    .with_system(die)
+                    .with_system(shoot),
+            )
             .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(drop_player));
     }
 }
@@ -38,10 +52,13 @@ struct PlayerBundle {
     speed: Speed,
     bound: GameAreaBound,
     collider: Collider,
+    shooting_timer: ShootingTimer,
 }
 
 impl Default for PlayerBundle {
     fn default() -> Self {
+        let shooting_timer = ShootingTimer(Timer::new(Duration::from_millis(100), false));
+
         Self {
             sprite_bundle: SpriteBundle {
                 transform: Transform::from_scale(Vec3::new(0.2, 0.2, 1.)),
@@ -51,6 +68,7 @@ impl Default for PlayerBundle {
             speed: Speed(150.),
             bound: GameAreaBound::default(),
             collider: Collider::cuboid(30., 30.),
+            shooting_timer,
         }
     }
 }
@@ -91,6 +109,36 @@ fn move_player(
     );
 
     player_transform.translation += movement;
+}
+
+fn shoot(
+    mut player_query: Query<(&mut ShootingTimer, &Transform), With<Player>>,
+    mut commands: Commands,
+    mut meshes: ResMut<Assets<Mesh>>,
+    mut materials: ResMut<Assets<ColorMaterial>>,
+    actions: Res<Actions>,
+    time: Res<Time>,
+) {
+    let (mut shooting_timer, player_transform) = player_query.single_mut();
+
+    shooting_timer.0.tick(time.delta());
+
+    if actions.player_shooting {
+        if shooting_timer.0.finished() {
+            commands.spawn_bundle(BulletBundle {
+                mesh: MaterialMesh2dBundle {
+                    mesh: meshes.add(Mesh::from(shape::Quad::default())).into(),
+                    transform: Transform::from_translation(player_transform.translation)
+                        .with_scale(Vec3::splat(10.)),
+                    material: materials.add(ColorMaterial::from(Color::YELLOW)),
+                    ..default()
+                },
+                ..default()
+            });
+
+            shooting_timer.0.reset();
+        }
+    }
 }
 
 fn die(

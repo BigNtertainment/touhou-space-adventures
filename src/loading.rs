@@ -27,6 +27,10 @@ impl Plugin for LoadingPlugin {
 pub struct FontAssets {
     #[asset(path = "fonts/FiraSans-Bold.ttf")]
     pub fira_sans: Handle<Font>,
+    #[asset(path = "fonts/Silkscreen-Bold.ttf")]
+    pub silk_bold: Handle<Font>,
+    #[asset(path = "fonts/Silkscreen-Regular.ttf")]
+    pub silk: Handle<Font>,
 }
 
 #[derive(AssetCollection)]
@@ -39,6 +43,8 @@ pub struct AudioAssets {
 pub struct TextureAssets {
     #[asset(path = "textures/bevy.png")]
     pub texture_bevy: Handle<Image>,
+    #[asset(path = "textures/menu.png")]
+    pub main_menu_bg: Handle<Image>,
     #[asset(path = "textures/bevy.png")]
     pub player_texture: Handle<Image>,
 }
