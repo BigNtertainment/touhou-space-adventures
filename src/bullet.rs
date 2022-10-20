@@ -1,3 +1,4 @@
+use crate::game_area::GameArea;
 use crate::GameState;
 use crate::{character::MoveSpeed, enemy::Enemy};
 use bevy::sprite::collide_aabb::collide;
@@ -36,9 +37,18 @@ impl Default for BulletBundle {
     }
 }
 
-fn fly(mut bullet_query: Query<(&mut Transform, &MoveSpeed), With<Bullet>>, time: Res<Time>) {
-    for (mut bullet_transform, move_speed) in &mut bullet_query {
+fn fly(
+    mut bullet_query: Query<(&mut Transform, &MoveSpeed, Entity), With<Bullet>>,
+    mut commands: Commands,
+    time: Res<Time>,
+    game_area: Res<GameArea>,
+) {
+    for (mut bullet_transform, move_speed, bullet_entity) in &mut bullet_query {
         bullet_transform.translation.y += move_speed.0 * time.delta_seconds();
+
+        if bullet_transform.translation.y > game_area.physical_pos().y + game_area.height / 2. {
+            commands.entity(bullet_entity).despawn_recursive()
+        }
     }
 }
 
