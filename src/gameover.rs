@@ -1,7 +1,7 @@
 use crate::loading::{FontAssets, TextureAssets};
 use crate::score::Score;
 use crate::GameState;
-use bevy::{app::AppExit, prelude::*};
+use bevy::prelude::*;
 
 #[derive(Component)]
 struct GameOverUI;

@@ -1,4 +1,4 @@
-use crate::{game_area::GameArea, GameState};
+use crate::GameState;
 use bevy::prelude::*;
 
 pub struct BackgroundPlugin;

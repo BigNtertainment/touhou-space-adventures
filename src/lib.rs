@@ -10,6 +10,7 @@ mod gameover;
 mod loading;
 mod menu;
 mod player;
+mod waves;
 mod score;
 
 use crate::actions::ActionsPlugin;
@@ -33,6 +34,7 @@ use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
 use gameover::GameOverPlugin;
+use waves::WavesPlugin;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -63,6 +65,7 @@ impl Plugin for GamePlugin {
             .add_plugin(DebugPlugin)
             .add_plugin(ScorePlugin)
             .add_plugin(EnemyPlugin)
+            .add_plugin(WavesPlugin)
             .add_plugin(PlayerPlugin)
             .add_plugin(BackgroundPlugin)
             .add_plugin(BulletPlugin)
