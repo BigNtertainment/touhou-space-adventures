@@ -1,6 +1,11 @@
 mod actions;
 mod audio;
+mod background;
+mod bullet;
+mod character;
 mod debug;
+mod enemy;
+mod game_area;
 mod loading;
 mod menu;
 mod player;
@@ -13,11 +18,19 @@ use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
 use crate::score::ScorePlugin;
+use background::BackgroundPlugin;
+use bullet::BulletPlugin;
+use enemy::EnemyPlugin;
+use game_area::GameAreaPlugin;
+
+pub const WIDTH: f32 = 1280.;
+pub const HEIGHT: f32 = 720.;
 
 use bevy::app::App;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
+use bevy_rapier2d::prelude::*;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -37,13 +50,18 @@ pub struct GamePlugin;
 impl Plugin for GamePlugin {
     fn build(&self, app: &mut App) {
         app.add_state(GameState::Loading)
+            .add_plugin(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0))
+            .add_plugin(GameAreaPlugin)
             .add_plugin(LoadingPlugin)
             .add_plugin(MenuPlugin)
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)
-            .add_plugin(PlayerPlugin)
             .add_plugin(DebugPlugin)
-            .add_plugin(ScorePlugin);
+            .add_plugin(ScorePlugin)
+            .add_plugin(EnemyPlugin)
+            .add_plugin(PlayerPlugin)
+            .add_plugin(BackgroundPlugin)
+            .add_plugin(BulletPlugin);
 
         #[cfg(debug_assertions)]
         {

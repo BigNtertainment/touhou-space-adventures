@@ -45,4 +45,6 @@ pub struct TextureAssets {
     pub texture_bevy: Handle<Image>,
     #[asset(path = "textures/menu.png")]
     pub main_menu_bg: Handle<Image>,
+    #[asset(path = "textures/bevy.png")]
+    pub player_texture: Handle<Image>,
 }
