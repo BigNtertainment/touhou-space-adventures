@@ -48,8 +48,6 @@ fn setup_menu(
     button_colors: Res<ButtonColors>,
     texture_assets: Res<TextureAssets>,
 ) {
-    commands.spawn_bundle(Camera2dBundle::default());
-
     commands
         .spawn_bundle(NodeBundle {
             style: Style {

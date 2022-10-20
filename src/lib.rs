@@ -2,6 +2,7 @@ mod actions;
 mod audio;
 mod background;
 mod bullet;
+mod camera;
 mod character;
 mod debug;
 mod enemy;
@@ -24,6 +25,7 @@ use crate::player::PlayerPlugin;
 use crate::score::ScorePlugin;
 use background::BackgroundPlugin;
 use bullet::BulletPlugin;
+use camera::CameraPlugin;
 use enemy::EnemyPlugin;
 use game_area::GameAreaPlugin;
 
@@ -62,6 +64,7 @@ impl Plugin for GamePlugin {
             .add_plugin(RapierPhysicsPlugin::<NoUserData>::pixels_per_meter(100.0))
             .add_plugin(GameAreaPlugin)
             .add_plugin(LoadingPlugin)
+            .add_plugin(CameraPlugin)
             .add_plugin(MenuPlugin)
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)

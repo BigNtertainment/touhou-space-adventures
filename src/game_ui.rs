@@ -1,6 +1,6 @@
-use crate::loading::{FontAssets, TextureAssets};
-use crate::score::Score;
+use crate::loading::FontAssets;
 use crate::GameState;
+use crate::util::despawn;
 use bevy::prelude::*;
 
 #[derive(Component)]
@@ -16,34 +16,16 @@ pub struct GameUIPlugin;
 
 impl Plugin for GameUIPlugin {
     fn build(&self, app: &mut App) {
-        app.init_resource::<ButtonColors>()
-            .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(game_ui_end))
-            .add_system_set(
-                SystemSet::on_update(GameState::Playing)
-            )
-            .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(game_ui_end));
+        app
+            .add_system_set(SystemSet::on_enter(GameState::Playing).with_system(spawn_game_ui))
+            .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(despawn::<GameUI>));
     }
 }
 
-struct ButtonColors {
-    normal: UiColor,
-    hovered: UiColor,
-}
-
-impl Default for ButtonColors {
-    fn default() -> Self {
-        ButtonColors {
-            normal: Color::rgb(0.15, 0.15, 0.15).into(),
-            hovered: Color::rgb(0.25, 0.25, 0.25).into(),
-        }
-    }
-}
-
-fn game_ui_end(
+fn spawn_game_ui(
     mut commands: Commands,
     font_assets: Res<FontAssets>,
 ) {
-    commands.spawn_bundle(Camera2dBundle::default());
     commands
         .spawn_bundle(NodeBundle {
             style: Style {
@@ -75,10 +57,4 @@ fn game_ui_end(
                 ..Default::default()
             });
         });
-}
-
-fn update_game_ui(){}
-
-fn cleanup_game_end(mut commands: Commands, ui: Query<Entity, With<GameUI>>) {
-    commands.entity(ui.single()).despawn_recursive();
 }
