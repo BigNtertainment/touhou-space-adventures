@@ -2,7 +2,7 @@ use bevy::prelude::*;
 use bevy_rapier2d::prelude::Collider;
 
 use crate::{
-    enemy::{Enemy, EnemyBundle, EnemyMovement, VerticalEnemyMovement},
+    enemy::{Enemy, EnemyBundle, EnemyMovement},
     game_area::GameArea,
     loading::TextureAssets,
     GameState,
@@ -44,15 +44,15 @@ fn spawn_waves_manager(mut commands: Commands) {
             enemies: vec![
                 EnemyData {
                     spawn_position: Vec2::new(-0.5, 1.),
-                    movement: EnemyMovement::Vertical(VerticalEnemyMovement::default()),
+                    movement: EnemyMovement::default(),
                 },
                 EnemyData {
                     spawn_position: Vec2::new(0., 1.),
-                    movement: EnemyMovement::Vertical(VerticalEnemyMovement::default()),
+                    movement: EnemyMovement::default(),
                 },
                 EnemyData {
                     spawn_position: Vec2::new(0.5, 1.),
-                    movement: EnemyMovement::Vertical(VerticalEnemyMovement::default()),
+                    movement: EnemyMovement::default(),
                 },
             ],
             timeout: 7.,
@@ -102,9 +102,7 @@ fn spawn_waves(
                         texture_size.height as f32,
                     ),
                 })
-                .insert(match &enemy_data.movement {
-                    EnemyMovement::Vertical(movement) => *movement,
-                });
+                .insert(enemy_data.movement.clone());
         }
 
         waves_manager.timer = Timer::from_seconds(current_wave.timeout, false);
