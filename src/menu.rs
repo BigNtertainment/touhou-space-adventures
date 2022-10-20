@@ -1,4 +1,4 @@
-use crate::loading::FontAssets;
+use crate::loading::{FontAssets, TextureAssets};
 use crate::GameState;
 use bevy::{app::AppExit, prelude::*};
 
@@ -45,6 +45,7 @@ impl Default for ButtonColors {
 fn setup_menu(
     mut commands: Commands,
     font_assets: Res<FontAssets>,
+    asset_server: Res<AssetServer>,
     button_colors: Res<ButtonColors>,
 ) {
     commands.spawn_bundle(Camera2dBundle::default());
@@ -64,6 +65,16 @@ fn setup_menu(
         .insert(MainMenuUI)
         .insert(Name::new("Ui"))
         .with_children(|parent| {
+
+            // the background
+            parent.spawn_bundle(ImageBundle {
+                style: Style {
+                    ..Default::default()
+                },
+                image: asset_server.load("textures/menu.png").into(),
+                ..Default::default()
+            });
+
             // title text
             parent.spawn_bundle(TextBundle {
                 text: Text {
