@@ -56,7 +56,7 @@ struct PlayerBundle {
 
 impl Default for PlayerBundle {
     fn default() -> Self {
-        let shooting_timer = ShootingTimer(Timer::new(Duration::from_millis(300), false));
+        let shooting_timer = ShootingTimer(Timer::new(Duration::from_millis(100), false));
 
         Self {
             sprite_bundle: SpriteBundle {
@@ -79,16 +79,9 @@ fn drop_player(mut commands: Commands, player_query: Query<Entity, With<Player>>
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {
     commands.spawn_bundle(PlayerBundle {
         sprite_bundle: SpriteBundle {
-<<<<<<< HEAD
-            transform: Transform::from_scale(Vec3::new(0.8, 0.8, 1.)).with_translation(
-                (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(1.),
-            ),
-=======
             transform: Transform::from_translation(
-                (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(10.),
-            )
-            .with_scale(Vec3::new(0.2, 0.2, 1.)),
->>>>>>> e289492 (Add game area background)
+                (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(99.),
+            ),
             texture: textures.player_texture.clone(),
             ..default()
         },
@@ -120,9 +113,9 @@ fn move_player(
 fn shoot(
     mut player_query: Query<(&mut ShootingTimer, &Transform), With<Player>>,
     mut commands: Commands,
+    textures: Res<TextureAssets>,
     actions: Res<Actions>,
     time: Res<Time>,
-    textures: Res<TextureAssets>,
 ) {
     let (mut shooting_timer, player_transform) = player_query.single_mut();
 
@@ -132,8 +125,8 @@ fn shoot(
         if shooting_timer.0.finished() {
             commands.spawn_bundle(BulletBundle {
                 sprite: SpriteBundle {
-                    transform: Transform::from_translation(player_transform.translation),
                     texture: textures.bullet.clone(),
+                    transform: Transform::from_translation(player_transform.translation),
                     ..default()
                 },
                 ..default()
