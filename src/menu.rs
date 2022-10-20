@@ -1,12 +1,15 @@
 use crate::loading::FontAssets;
 use crate::GameState;
-use bevy::prelude::*;
+use bevy::{app::AppExit, prelude::*};
 
 #[derive(Component)]
 struct MainMenuUI;
 
 #[derive(Component)]
 struct PlayButton;
+
+#[derive(Component)]
+struct ExitButton;
 
 pub struct MenuPlugin;
 
@@ -16,7 +19,11 @@ impl Plugin for MenuPlugin {
     fn build(&self, app: &mut App) {
         app.init_resource::<ButtonColors>()
             .add_system_set(SystemSet::on_enter(GameState::Menu).with_system(setup_menu))
-            .add_system_set(SystemSet::on_update(GameState::Menu).with_system(click_play_button))
+            .add_system_set(
+                SystemSet::on_update(GameState::Menu)
+                    .with_system(click_play_button)
+                    .with_system(click_exit_button),
+            )
             .add_system_set(SystemSet::on_exit(GameState::Menu).with_system(cleanup_menu));
     }
 }
@@ -51,7 +58,7 @@ fn setup_menu(
                 flex_direction: FlexDirection::ColumnReverse,
                 ..Default::default()
             },
-            color: UiColor(Color::BLACK),
+            color: UiColor(Color::hex("00010f").unwrap()),
             ..Default::default()
         })
         .insert(MainMenuUI)
@@ -77,7 +84,7 @@ fn setup_menu(
             parent
                 .spawn_bundle(ButtonBundle {
                     style: Style {
-                        size: Size::new(Val::Px(120.0), Val::Px(50.0)),
+                        size: Size::new(Val::Px(200.0), Val::Px(50.0)),
                         margin: UiRect::all(Val::Auto),
                         justify_content: JustifyContent::Center,
                         align_items: AlignItems::Center,
@@ -87,11 +94,45 @@ fn setup_menu(
                     ..Default::default()
                 })
                 .insert(PlayButton)
+                .insert(Name::new("PlayButton"))
                 .with_children(|parent| {
                     parent.spawn_bundle(TextBundle {
                         text: Text {
                             sections: vec![TextSection {
                                 value: "Play".to_string(),
+                                style: TextStyle {
+                                    font: font_assets.silk_bold.clone(),
+                                    font_size: 40.0,
+                                    color: Color::rgb(0.9, 0.9, 0.9),
+                                },
+                            }],
+                            alignment: Default::default(),
+                        },
+                        ..Default::default()
+                    });
+                });
+
+            // exit button
+            #[cfg(not(target_arch = "wasm32"))]
+            parent
+                .spawn_bundle(ButtonBundle {
+                    style: Style {
+                        size: Size::new(Val::Px(200.0), Val::Px(50.0)),
+                        margin: UiRect::all(Val::Auto),
+                        justify_content: JustifyContent::Center,
+                        align_items: AlignItems::Center,
+                        ..Default::default()
+                    },
+                    color: button_colors.normal,
+                    ..Default::default()
+                })
+                .insert(ExitButton)
+                .insert(Name::new("ExitButton"))
+                .with_children(|parent| {
+                    parent.spawn_bundle(TextBundle {
+                        text: Text {
+                            sections: vec![TextSection {
+                                value: "Exit".to_string(),
                                 style: TextStyle {
                                     font: font_assets.silk_bold.clone(),
                                     font_size: 40.0,
@@ -129,6 +170,29 @@ fn click_play_button(
     }
 }
 
-fn cleanup_menu(mut commands: Commands, UI: Query<Entity, With<MainMenuUI>>) {
-    commands.entity(UI.single()).despawn_recursive();
+fn click_exit_button(
+    button_colors: Res<ButtonColors>,
+    mut interaction_query: Query<
+        (&Interaction, &mut UiColor),
+        (Changed<Interaction>, With<ExitButton>),
+    >,
+    mut exit: EventWriter<AppExit>,
+) {
+    for (interaction, mut color) in &mut interaction_query {
+        match *interaction {
+            Interaction::Clicked => {
+                exit.send(AppExit);
+            }
+            Interaction::Hovered => {
+                *color = button_colors.hovered;
+            }
+            Interaction::None => {
+                *color = button_colors.normal;
+            }
+        }
+    }
+}
+
+fn cleanup_menu(mut commands: Commands, ui: Query<Entity, With<MainMenuUI>>) {
+    commands.entity(ui.single()).despawn_recursive();
 }
