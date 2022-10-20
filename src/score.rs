@@ -5,7 +5,7 @@ use crate::GameState;
 pub struct ScorePlugin;
 
 impl Plugin for ScorePlugin {
-    fn build(&self, app: &mut App){
+    fn build(&self, app: &mut App) {
         app.add_system_set(SystemSet::on_enter(GameState::Playing).with_system(load_score));
     }
 }

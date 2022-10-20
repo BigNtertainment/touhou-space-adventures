@@ -47,4 +47,16 @@ pub struct TextureAssets {
     pub main_menu_bg: Handle<Image>,
     #[asset(path = "textures/bevy.png")]
     pub player_texture: Handle<Image>,
+    #[asset(path = "textures/gameover.png")]
+    pub game_over_bg: Handle<Image>,
+    #[asset(path = "textures/pl_front.png")]
+    pub player_front: Handle<Image>,
+    #[asset(path = "textures/pl_left.png")]
+    pub player_left: Handle<Image>,
+    #[asset(path = "textures/pl_right.png")]
+    pub player_right: Handle<Image>,
+    #[asset(path = "textures/bullet.png")]
+    pub bullet: Handle<Image>,
+    #[asset(path = "textures/lober.png")]
+    pub enemy: Handle<Image>,
 }

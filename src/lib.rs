@@ -6,6 +6,7 @@ mod character;
 mod debug;
 mod enemy;
 mod game_area;
+mod gameover;
 mod loading;
 mod menu;
 mod player;
@@ -31,6 +32,7 @@ use bevy::app::App;
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
+use gameover::GameOverPlugin;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -43,6 +45,8 @@ enum GameState {
     Playing,
     // Here the menu is drawn and waiting for player interaction
     Menu,
+    // When player dies their soul gets transported to the game over screen
+    GameOver,
 }
 
 pub struct GamePlugin;
@@ -61,7 +65,8 @@ impl Plugin for GamePlugin {
             .add_plugin(EnemyPlugin)
             .add_plugin(PlayerPlugin)
             .add_plugin(BackgroundPlugin)
-            .add_plugin(BulletPlugin);
+            .add_plugin(BulletPlugin)
+            .add_plugin(GameOverPlugin);
 
         #[cfg(debug_assertions)]
         {
