@@ -2,8 +2,8 @@ use crate::game_area::GameArea;
 use crate::score::Score;
 use crate::GameState;
 use crate::{character::MoveSpeed, enemy::Enemy};
-use bevy::sprite::collide_aabb::collide;
 use bevy::prelude::*;
+use bevy::sprite::collide_aabb::collide;
 
 pub struct BulletPlugin;
 

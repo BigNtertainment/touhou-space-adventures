@@ -7,6 +7,7 @@ mod character;
 mod debug;
 mod enemy;
 mod game_area;
+mod game_ui;
 mod gameover;
 mod loading;
 mod menu;
@@ -14,7 +15,6 @@ mod player;
 mod score;
 mod util;
 mod waves;
-mod game_ui;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
