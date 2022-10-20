@@ -1,8 +1,8 @@
 [package]
-name = "bevy_game" # ToDo
+name = "touhou_space_adventures"
 version = "0.1.0"
 publish = false
-authors = ["Niklas Eicker <git@nikl.me>"] # ToDo: you are the author ;)
+authors = ["Dawid Piotrowski", "Sebastian Flajszer", "Tymon Ploch"]
 edition = "2021"
 exclude = ["dist", "build", "assets", "credits"]
 
