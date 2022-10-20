@@ -133,8 +133,7 @@ fn shoot(
                     material: materials.add(ColorMaterial::from(Color::YELLOW)),
                     ..default()
                 },
-                bullet: Bullet,
-                move_speed: MoveSpeed(500.),
+                ..default()
             });
 
             shooting_timer.0.reset();
