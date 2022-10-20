@@ -57,4 +57,8 @@ pub struct TextureAssets {
     pub player_right: Handle<Image>,
     #[asset(path = "textures/bullet.png")]
     pub bullet: Handle<Image>,
+    #[asset(path = "textures/lober.png")]
+    pub enemy: Handle<Image>,
+    #[asset(path = "textures/game_area.png")]
+    pub game_area: Handle<Image>,
 }
