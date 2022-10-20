@@ -5,8 +5,8 @@ use bevy::prelude::{App, ClearColor, Color, Msaa, NonSend, WindowDescriptor};
 use bevy::window::WindowId;
 use bevy::winit::WinitWindows;
 use bevy::DefaultPlugins;
-use touhou_space_adventures::GamePlugin;
 use std::io::Cursor;
+use touhou_space_adventures::{GamePlugin, HEIGHT, WIDTH};
 use winit::window::Icon;
 
 fn main() {
@@ -14,8 +14,8 @@ fn main() {
         .insert_resource(Msaa { samples: 1 })
         .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
         .insert_resource(WindowDescriptor {
-            width: 800.,
-            height: 600.,
+            width: WIDTH,
+            height: HEIGHT,
             title: "Touhou Space Adventures".to_string(), // ToDo
             canvas: Some("#bevy".to_owned()),
             ..Default::default()
