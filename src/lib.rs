@@ -1,6 +1,7 @@
 mod actions;
 mod audio;
 mod background;
+mod bullet;
 mod character;
 mod enemy;
 mod game_area;
@@ -11,6 +12,7 @@ mod player;
 use actions::ActionsPlugin;
 use audio::InternalAudioPlugin;
 use background::BackgroundPlugin;
+use bullet::BulletPlugin;
 use enemy::EnemyPlugin;
 use game_area::GameAreaPlugin;
 use loading::LoadingPlugin;
@@ -52,7 +54,8 @@ impl Plugin for GamePlugin {
             .add_plugin(InternalAudioPlugin)
             .add_plugin(EnemyPlugin)
             .add_plugin(PlayerPlugin)
-            .add_plugin(BackgroundPlugin);
+            .add_plugin(BackgroundPlugin)
+            .add_plugin(BulletPlugin);
 
         #[cfg(debug_assertions)]
         {
