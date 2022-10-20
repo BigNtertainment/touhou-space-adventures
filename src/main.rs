@@ -12,7 +12,7 @@ use winit::window::Icon;
 fn main() {
     App::new()
         .insert_resource(Msaa { samples: 1 })
-        .insert_resource(ClearColor(Color::rgb(0.4, 0.4, 0.4)))
+        .insert_resource(ClearColor(Color::hex("00010f").unwrap()))
         .insert_resource(WindowDescriptor {
             width: WIDTH,
             height: HEIGHT,
