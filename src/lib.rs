@@ -10,8 +10,9 @@ mod gameover;
 mod loading;
 mod menu;
 mod player;
-mod waves;
 mod score;
+mod util;
+mod waves;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;

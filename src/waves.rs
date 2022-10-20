@@ -1,3 +1,4 @@
+use crate::util::despawn;
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::Collider;
 
@@ -12,10 +13,8 @@ pub struct WavesPlugin;
 
 impl Plugin for WavesPlugin {
     fn build(&self, app: &mut App) {
-        app.add_system_set(
-            SystemSet::on_enter(GameState::Playing).with_system(spawn_waves_manager),
-        )
-        .add_system_set(SystemSet::on_update(GameState::Playing).with_system(spawn_waves));
+        app.add_system_set(SystemSet::on_enter(GameState::Playing).with_system(spawn_waves_manager))
+            .add_system_set(SystemSet::on_update(GameState::Playing).with_system(spawn_waves))
     }
 }
 

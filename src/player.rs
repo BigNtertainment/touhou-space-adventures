@@ -5,7 +5,8 @@ use crate::bullet::BulletBundle;
 use crate::enemy::Enemy;
 use crate::game_area::{GameArea, GameAreaBound, GameAreaBoundLabel};
 use crate::loading::TextureAssets;
-use crate::GameState;
+use crate::util::despawn;
+use crate::{util, GameState};
 use bevy::prelude::*;
 use bevy::sprite::collide_aabb::collide;
 use bevy_rapier2d::prelude::Collider;
@@ -38,7 +39,7 @@ impl Plugin for PlayerPlugin {
                     .with_system(die)
                     .with_system(shoot),
             )
-            .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(drop_player));
+            .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(despawn::<Player>));
     }
 }
 
@@ -69,10 +70,6 @@ impl Default for PlayerBundle {
             shooting_timer,
         }
     }
-}
-
-fn drop_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
-    commands.entity(player_query.single()).despawn_recursive();
 }
 
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {

@@ -1,4 +1,5 @@
 use crate::game_area::GameArea;
+use crate::util::despawn;
 use crate::GameState;
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::Collider;
@@ -9,7 +10,8 @@ impl Plugin for EnemyPlugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(
             SystemSet::on_update(GameState::Playing).with_system(update_enemy_movement),
-        );
+        )
+        .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(despawn::<Enemy>));
     }
 }
 
@@ -34,7 +36,7 @@ fn update_enemy_movement(
         match movement {
             EnemyMovement::Vertical { speed } => {
                 transform.translation.y -= speed * time.delta_seconds();
-            },
+            }
             EnemyMovement::Sin { speed, amplitude } => {
                 transform.translation.y -= speed * time.delta_seconds();
                 transform.translation.x += (transform.translation.y / 50.).sin() * amplitude / 15.;
@@ -49,13 +51,8 @@ fn update_enemy_movement(
 
 #[derive(Component, Copy, Clone, Debug)]
 pub enum EnemyMovement {
-    Vertical {
-        speed: f32,
-    },
-    Sin {
-        speed: f32,
-        amplitude: f32,
-    }
+    Vertical { speed: f32 },
+    Sin { speed: f32, amplitude: f32 },
 }
 
 impl Default for EnemyMovement {
