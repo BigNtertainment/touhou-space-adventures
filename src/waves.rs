@@ -91,7 +91,7 @@ fn spawn_waves(
                         transform: Transform::from_translation(
                             game_area
                                 .relative_to_absolute(enemy_data.spawn_position)
-                                .extend(0.),
+                                .extend(99.),
                         )
                         .with_scale(Vec3::new(0.75, 0.75, 1.)),
                         ..default()

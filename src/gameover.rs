@@ -48,7 +48,6 @@ fn setup_end(
     score: Res<Score>,
     texture_assets: Res<TextureAssets>,
 ) {
-    commands.spawn_bundle(Camera2dBundle::default());
     commands
         .spawn_bundle(NodeBundle {
             style: Style {
