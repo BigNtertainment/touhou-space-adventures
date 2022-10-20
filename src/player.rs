@@ -79,9 +79,16 @@ fn drop_player(mut commands: Commands, player_query: Query<Entity, With<Player>>
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {
     commands.spawn_bundle(PlayerBundle {
         sprite_bundle: SpriteBundle {
+<<<<<<< HEAD
             transform: Transform::from_scale(Vec3::new(0.8, 0.8, 1.)).with_translation(
                 (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(1.),
             ),
+=======
+            transform: Transform::from_translation(
+                (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(10.),
+            )
+            .with_scale(Vec3::new(0.2, 0.2, 1.)),
+>>>>>>> e289492 (Add game area background)
             texture: textures.player_texture.clone(),
             ..default()
         },
