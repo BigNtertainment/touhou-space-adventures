@@ -15,11 +15,12 @@ fn create_background(
     mut materials: ResMut<Assets<ColorMaterial>>,
     game_area: Res<GameArea>,
 ) {
-    commands.spawn_bundle(MaterialMesh2dBundle {
-        mesh: meshes.add(Mesh::from(shape::Quad::default())).into(),
-        transform: Transform::from_translation(game_area.physical_pos().extend(0.))
-            .with_scale(Vec3::new(game_area.width, game_area.height, 0.)),
-        material: materials.add(ColorMaterial::from(Color::DARK_GRAY)),
-        ..default()
-    });
+    // TODO: Add background somehow
+    // commands.spawn_bundle(MaterialMesh2dBundle {
+    //     mesh: meshes.add(Mesh::from(shape::Quad::default())).into(),
+    //     transform: Transform::from_translation(game_area.physical_pos().extend(0.))
+    //         .with_scale(Vec3::new(game_area.width, game_area.height, 0.)),
+    //     material: materials.add(ColorMaterial::from(Color::DARK_GRAY)),
+    //     ..default()
+    // });
 }

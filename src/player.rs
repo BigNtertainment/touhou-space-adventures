@@ -1,8 +1,12 @@
 use crate::actions::Actions;
+use crate::enemy::Enemy;
+use crate::game_area::{GameArea, GameAreaBound};
 use crate::game_area::{GameArea, GameAreaBound, GameAreaBoundLabel};
 use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::prelude::*;
+use bevy::sprite::collide_aabb::collide;
+use bevy_rapier2d::prelude::Collider;
 
 pub struct PlayerPlugin;
 
@@ -17,7 +21,16 @@ pub struct Speed(f32);
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(SystemSet::on_enter(GameState::Playing).with_system(spawn_player))
-            .add_system_set(SystemSet::on_update(GameState::Playing).with_system(move_player).before(GameAreaBoundLabel))
+            .add_system_set(
+                SystemSet::on_update(GameState::Playing)
+                    .with_system(move_player)
+                    .before(GameAreaBoundLabel),
+            )
+            .add_system_set(
+                SystemSet::on_update(GameState::Playing)
+                    .with_system(move_player)
+                    .with_system(die),
+            )
             .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(drop_player));
     }
 }
@@ -29,6 +42,7 @@ struct PlayerBundle {
     player: Player,
     speed: Speed,
     bound: GameAreaBound,
+    collider: Collider,
 }
 
 impl Default for PlayerBundle {
@@ -41,6 +55,7 @@ impl Default for PlayerBundle {
             player: Player::default(),
             speed: Speed(150.),
             bound: GameAreaBound::default(),
+            collider: Collider::cuboid(30., 30.),
         }
     }
 }
@@ -52,8 +67,8 @@ fn drop_player(mut commands: Commands, player_query: Query<Entity, With<Player>>
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {
     commands.spawn_bundle(PlayerBundle {
         sprite_bundle: SpriteBundle {
-            transform: Transform::from_scale(Vec3::new(0.2, 0.2, 2.)).with_translation(
-                (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(0.),
+            transform: Transform::from_scale(Vec3::new(0.2, 0.2, 1.)).with_translation(
+                (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(1.),
             ),
             texture: textures.player_texture.clone(),
             ..default()
@@ -81,4 +96,25 @@ fn move_player(
     );
 
     player_transform.translation += movement;
+}
+
+fn die(
+    player_query: Query<&Transform, With<Player>>,
+    enemies_query: Query<&Transform, With<Enemy>>,
+) {
+    let player_transform = player_query.single();
+
+    for enemy_transform in &enemies_query {
+        if collide(
+            player_transform.translation,
+            Vec2::splat(30.),
+            enemy_transform.translation,
+            Vec2::splat(30.),
+        )
+        .is_some()
+        {
+            println!("Player is dead");
+            break;
+        }
+    }
 }

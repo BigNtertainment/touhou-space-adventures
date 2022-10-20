@@ -2,6 +2,7 @@ use crate::character::MoveSpeed;
 use crate::game_area::GameArea;
 use crate::GameState;
 use bevy::prelude::*;
+use bevy_rapier2d::prelude::Collider;
 
 use crate::loading::TextureAssets;
 
@@ -23,14 +24,23 @@ pub struct EnemyBundle {
     sprite_bundle: SpriteBundle,
     enemy: Enemy,
     move_speed: MoveSpeed,
+    collider: Collider,
 }
 
-fn spawn_enemies(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {
+fn spawn_enemies(
+    mut commands: Commands,
+    textures: Res<TextureAssets>,
+    game_area: Res<GameArea>,
+    images: Res<Assets<Image>>,
+) {
     // TODO: Think how to implement logic that spawns waves or somtehing
     for i in -1..2 {
+        let texture = textures.texture_bevy.clone();
+        let texture_size = images.get(&texture).unwrap().texture_descriptor.size;
+
         commands.spawn_bundle(EnemyBundle {
             sprite_bundle: SpriteBundle {
-                texture: textures.texture_bevy.clone(),
+                texture,
                 transform: Transform::from_translation(Vec3::new(
                     game_area.physical_pos().x + 100. * i as f32,
                     300.,
@@ -41,6 +51,7 @@ fn spawn_enemies(mut commands: Commands, textures: Res<TextureAssets>, game_area
             },
             move_speed: MoveSpeed(150.),
             enemy: Enemy,
+            collider: Collider::cuboid(texture_size.width as f32, texture_size.height as f32),
         });
     }
 }
