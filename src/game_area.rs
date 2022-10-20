@@ -7,7 +7,9 @@ pub struct GameAreaPlugin;
 impl Plugin for GameAreaPlugin {
     fn build(&self, app: &mut App) {
         app.add_startup_system(register_game_area).add_system_set(
-            SystemSet::on_update(GameState::Playing).label(GameAreaBoundLabel).with_system(bound_to_game_area),
+            SystemSet::on_update(GameState::Playing)
+                .label(GameAreaBoundLabel)
+                .with_system(bound_to_game_area),
         );
     }
 }

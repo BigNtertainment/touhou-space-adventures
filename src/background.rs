@@ -1,5 +1,5 @@
 use crate::{game_area::GameArea, GameState};
-use bevy::{prelude::*, sprite::MaterialMesh2dBundle};
+use bevy::prelude::*;
 
 pub struct BackgroundPlugin;
 
@@ -10,16 +10,16 @@ impl Plugin for BackgroundPlugin {
 }
 
 fn create_background(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<ColorMaterial>>,
-    game_area: Res<GameArea>,
+    // mut commands: Commands,
+    // mut meshes: ResMut<Assets<Mesh>>,
+    // mut materials: ResMut<Assets<ColorMaterial>>,
+    // game_area: Res<GameArea>,
 ) {
-    commands.spawn_bundle(MaterialMesh2dBundle {
-        mesh: meshes.add(Mesh::from(shape::Quad::default())).into(),
-        transform: Transform::from_translation(game_area.physical_pos().extend(0.))
-            .with_scale(Vec3::new(game_area.width, game_area.height, 0.)),
-        material: materials.add(ColorMaterial::from(Color::DARK_GRAY)),
-        ..default()
-    });
+    // commands.spawn_bundle(MaterialMesh2dBundle {
+    //     mesh: meshes.add(Mesh::from(shape::Quad::default())).into(),
+    //     transform: Transform::from_translation(game_area.physical_pos().extend(0.))
+    //         .with_scale(Vec3::new(game_area.width, game_area.height, 0.)),
+    //     material: materials.add(ColorMaterial::from(Color::DARK_GRAY)),
+    //     ..default()
+    // });
 }
