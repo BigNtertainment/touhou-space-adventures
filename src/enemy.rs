@@ -34,6 +34,10 @@ fn update_enemy_movement(
         match movement {
             EnemyMovement::Vertical { speed } => {
                 transform.translation.y -= speed * time.delta_seconds();
+            },
+            EnemyMovement::Sin { speed, amplitude } => {
+                transform.translation.y -= speed * time.delta_seconds();
+                transform.translation.x += (transform.translation.y / 50.).sin() * amplitude / 15.;
             }
         }
 
@@ -48,6 +52,10 @@ pub enum EnemyMovement {
     Vertical {
         speed: f32,
     },
+    Sin {
+        speed: f32,
+        amplitude: f32,
+    }
 }
 
 impl Default for EnemyMovement {

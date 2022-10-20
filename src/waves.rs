@@ -40,23 +40,51 @@ struct WavesManager {
 fn spawn_waves_manager(mut commands: Commands) {
     commands.spawn().insert(WavesManager {
         timer: Timer::from_seconds(3., false),
-        waves: vec![Wave {
-            enemies: vec![
-                EnemyData {
-                    spawn_position: Vec2::new(-0.5, 1.),
-                    movement: EnemyMovement::default(),
-                },
-                EnemyData {
-                    spawn_position: Vec2::new(0., 1.),
-                    movement: EnemyMovement::default(),
-                },
-                EnemyData {
-                    spawn_position: Vec2::new(0.5, 1.),
-                    movement: EnemyMovement::default(),
-                },
-            ],
-            timeout: 7.,
-        }],
+        waves: vec![
+            Wave {
+                enemies: vec![
+                    EnemyData {
+                        spawn_position: Vec2::new(-0.5, 1.),
+                        movement: EnemyMovement::default(),
+                    },
+                    EnemyData {
+                        spawn_position: Vec2::new(0., 1.),
+                        movement: EnemyMovement::default(),
+                    },
+                    EnemyData {
+                        spawn_position: Vec2::new(0.5, 1.),
+                        movement: EnemyMovement::default(),
+                    },
+                ],
+                timeout: 7.,
+            },
+            Wave {
+                enemies: vec![
+                    EnemyData {
+                        spawn_position: Vec2::new(-0.5, 1.),
+                        movement: EnemyMovement::Sin {
+                            speed: 150.,
+                            amplitude: 35.,
+                        },
+                    },
+                    EnemyData {
+                        spawn_position: Vec2::new(0., 1.),
+                        movement: EnemyMovement::Sin {
+                            speed: 150.,
+                            amplitude: 35.,
+                        },
+                    },
+                    EnemyData {
+                        spawn_position: Vec2::new(0.5, 1.),
+                        movement: EnemyMovement::Sin {
+                            speed: 150.,
+                            amplitude: 35.,
+                        },
+                    },
+                ],
+                timeout: 7.,
+            },
+        ],
         current: 0,
     });
 }
