@@ -68,6 +68,7 @@ fn setup_menu(
             // the background
             parent.spawn_bundle(ImageBundle {
                 style: Style {
+                    size: Size::new(Val::Percent(80.0), Val::Percent(67.0)),
                     ..Default::default()
                 },
                 image: UiImage(texture_assets.main_menu_bg.clone()),
@@ -81,11 +82,14 @@ fn setup_menu(
                         value: "Touhou Space Adventures".to_string(),
                         style: TextStyle {
                             font: font_assets.silk.clone(),
-                            font_size: 96.0,
+                            font_size: 72.0,
                             color: Color::rgb(1.0, 1.0, 1.0),
                         },
                     }],
                     alignment: Default::default(),
+                },
+                style: Style {
+                    ..Default::default()
                 },
                 ..Default::default()
             });

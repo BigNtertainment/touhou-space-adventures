@@ -16,6 +16,7 @@ fn main() {
         .insert_resource(WindowDescriptor {
             width: WIDTH,
             height: HEIGHT,
+            resizable: false,
             title: "Touhou Space Adventures".to_string(), // ToDo
             canvas: Some("#bevy".to_owned()),
             ..Default::default()

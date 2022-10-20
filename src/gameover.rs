@@ -67,6 +67,7 @@ fn setup_end(
             // the background
             parent.spawn_bundle(ImageBundle {
                 style: Style {
+                    size: Size::new(Val::Percent(80.0), Val::Percent(67.0)),
                     ..Default::default()
                 },
                 image: UiImage(texture_assets.game_over_bg.clone()),
@@ -77,17 +78,17 @@ fn setup_end(
             parent.spawn_bundle(TextBundle {
                 text: Text {
                     sections: vec![TextSection {
-                        value: format!(
-                            "You lost with score of: {}",
-                            score.get_score()
-                        ),
+                        value: format!("You lost with score of: {}", score.get_score()),
                         style: TextStyle {
                             font: font_assets.silk.clone(),
-                            font_size: 96.0,
+                            font_size: 72.0,
                             color: Color::rgb(1.0, 1.0, 1.0),
                         },
                     }],
                     alignment: Default::default(),
+                },
+                style: Style {
+                    ..Default::default()
                 },
                 ..Default::default()
             });
