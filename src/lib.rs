@@ -13,6 +13,7 @@ mod player;
 mod score;
 mod util;
 mod waves;
+mod game_ui;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
@@ -34,6 +35,7 @@ use bevy::app::App;
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
 use bevy_rapier2d::prelude::*;
+use game_ui::GameUIPlugin;
 use gameover::GameOverPlugin;
 use waves::WavesPlugin;
 
@@ -70,7 +72,8 @@ impl Plugin for GamePlugin {
             .add_plugin(PlayerPlugin)
             .add_plugin(BackgroundPlugin)
             .add_plugin(BulletPlugin)
-            .add_plugin(GameOverPlugin);
+            .add_plugin(GameOverPlugin)
+            .add_plugin(GameUIPlugin);
 
         #[cfg(debug_assertions)]
         {
