@@ -57,7 +57,6 @@ fn setup_menu(
         .insert(MainMenuUI)
         .insert(Name::new("Ui"))
         .with_children(|parent| {
-
             // title text
             parent.spawn_bundle(TextBundle {
                 text: Text {
@@ -75,35 +74,35 @@ fn setup_menu(
             });
 
             // play button
-            parent.spawn_bundle(ButtonBundle {
-                style: Style {
-                    size: Size::new(Val::Px(120.0), Val::Px(50.0)),
-                    margin: UiRect::all(Val::Auto),
-                    justify_content: JustifyContent::Center,
-                    align_items: AlignItems::Center,
-                    ..Default::default()
-                },
-                color: button_colors.normal,
-                ..Default::default()
-            })
-            .insert(PlayButton)
-            .with_children(|parent| {
-                parent.spawn_bundle(TextBundle {
-                    text: Text {
-                        sections: vec![TextSection {
-                            value: "Play".to_string(),
-                            style: TextStyle {
-                                font: font_assets.silk_bold.clone(),
-                                font_size: 40.0,
-                                color: Color::rgb(0.9, 0.9, 0.9),
-                            },
-                        }],
-                        alignment: Default::default(),
+            parent
+                .spawn_bundle(ButtonBundle {
+                    style: Style {
+                        size: Size::new(Val::Px(120.0), Val::Px(50.0)),
+                        margin: UiRect::all(Val::Auto),
+                        justify_content: JustifyContent::Center,
+                        align_items: AlignItems::Center,
+                        ..Default::default()
                     },
+                    color: button_colors.normal,
                     ..Default::default()
+                })
+                .insert(PlayButton)
+                .with_children(|parent| {
+                    parent.spawn_bundle(TextBundle {
+                        text: Text {
+                            sections: vec![TextSection {
+                                value: "Play".to_string(),
+                                style: TextStyle {
+                                    font: font_assets.silk_bold.clone(),
+                                    font_size: 40.0,
+                                    color: Color::rgb(0.9, 0.9, 0.9),
+                                },
+                            }],
+                            alignment: Default::default(),
+                        },
+                        ..Default::default()
+                    });
                 });
-            });
-
         });
 }
 
