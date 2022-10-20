@@ -78,7 +78,7 @@ fn spawn_waves(
         let current_wave = &waves_manager.waves[waves_manager.current];
 
         let texture_size = images
-            .get(&textures.texture_bevy)
+            .get(&textures.enemy_texture)
             .unwrap()
             .texture_descriptor
             .size;
@@ -87,13 +87,13 @@ fn spawn_waves(
             commands
                 .spawn_bundle(EnemyBundle {
                     sprite_bundle: SpriteBundle {
-                        texture: textures.texture_bevy.clone(),
+                        texture: textures.enemy_texture.clone(),
                         transform: Transform::from_translation(
                             game_area
                                 .relative_to_absolute(enemy_data.spawn_position)
                                 .extend(0.),
                         )
-                        .with_scale(Vec3::new(0.2, 0.2, 1.)),
+                        .with_scale(Vec3::new(0.75, 0.75, 1.)),
                         ..default()
                     },
                     enemy: Enemy,
