@@ -1,4 +1,5 @@
 use crate::character::MoveSpeed;
+use crate::game_area::GameArea;
 use crate::GameState;
 use bevy::prelude::*;
 
@@ -24,19 +25,15 @@ pub struct EnemyBundle {
     move_speed: MoveSpeed,
 }
 
-fn spawn_enemies(mut commands: Commands, textures: Res<TextureAssets>) {
-    // TODO: replace that with GameArea asset or sth
-    let game_area_size = Vec2::new(300., 600.);
-    let x_change = (game_area_size.x - 50.) / 3.;
-
+fn spawn_enemies(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {
     // TODO: Think how to implement logic that spawns waves or somtehing
     for i in -1..2 {
         commands.spawn_bundle(EnemyBundle {
             sprite_bundle: SpriteBundle {
                 texture: textures.texture_bevy.clone(),
                 transform: Transform::from_translation(Vec3::new(
-                    i as f32 * x_change + 50.,
-                    500.,
+                    game_area.physical_pos().x + 100. * i as f32,
+                    300.,
                     1.,
                 ))
                 .with_scale(Vec3::new(0.2, 0.2, 1.)),
@@ -52,4 +49,6 @@ fn move_enemy(mut enemy_query: Query<(&mut Transform, &MoveSpeed), With<Enemy>>,
     for (mut enemy_transform, move_speed) in &mut enemy_query {
         enemy_transform.translation.y -= move_speed.0 * time.delta_seconds();
     }
+
+    // TODO: Delete enemies when they go out of the screen view
 }

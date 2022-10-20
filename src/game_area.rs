@@ -30,8 +30,8 @@ impl GameArea {
 
 fn register_game_area(mut commands: Commands) {
     commands.insert_resource(GameArea {
-        width: 300.,
-        height: 600.,
+        width: 400.,
+        height: 700.,
         position: Vec2::new(-0.25, 0.),
     })
 }

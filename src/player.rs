@@ -1,5 +1,5 @@
 use crate::actions::Actions;
-use crate::game_area::{GameAreaBound, GameArea};
+use crate::game_area::{GameArea, GameAreaBound};
 use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::prelude::*;
@@ -50,17 +50,16 @@ fn drop_player(mut commands: Commands, player_query: Query<Entity, With<Player>>
 }
 
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {
-    commands
-        .spawn_bundle(PlayerBundle {
-            sprite_bundle: SpriteBundle {
-                transform: Transform::from_scale(Vec3::new(0.2, 0.2, 1.)).with_translation(
-                    (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(0.)
-                ),
-                texture: textures.player_texture.clone(),
-                ..default()
-            },
+    commands.spawn_bundle(PlayerBundle {
+        sprite_bundle: SpriteBundle {
+            transform: Transform::from_scale(Vec3::new(0.2, 0.2, 2.)).with_translation(
+                (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(0.),
+            ),
+            texture: textures.player_texture.clone(),
             ..default()
-        });
+        },
+        ..default()
+    });
 }
 
 fn move_player(
