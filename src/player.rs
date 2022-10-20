@@ -8,7 +8,6 @@ use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::prelude::*;
 use bevy::sprite::collide_aabb::collide;
-use bevy::sprite::MaterialMesh2dBundle;
 use bevy_rapier2d::prelude::Collider;
 
 pub struct PlayerPlugin;
