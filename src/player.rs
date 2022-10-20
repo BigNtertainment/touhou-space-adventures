@@ -1,14 +1,15 @@
 use crate::actions::Actions;
+use crate::game_area::{GameAreaBound, GameArea};
 use crate::loading::TextureAssets;
 use crate::GameState;
 use bevy::prelude::*;
 
 pub struct PlayerPlugin;
 
-#[derive(Component)]
+#[derive(Component, Default)]
 pub struct Player;
 
-#[derive(Component)]
+#[derive(Component, Default)]
 pub struct Speed(f32);
 
 /// This plugin handles player related stuff like movement
@@ -21,33 +22,57 @@ impl Plugin for PlayerPlugin {
     }
 }
 
+#[derive(Bundle)]
+struct PlayerBundle {
+    #[bundle]
+    sprite_bundle: SpriteBundle,
+    player: Player,
+    speed: Speed,
+    bound: GameAreaBound,
+}
+
+impl Default for PlayerBundle {
+    fn default() -> Self {
+        Self {
+            sprite_bundle: SpriteBundle {
+                transform: Transform::from_scale(Vec3::new(0.2, 0.2, 1.)),
+                ..default()
+            },
+            player: Player::default(),
+            speed: Speed(150.),
+            bound: GameAreaBound::default(),
+        }
+    }
+}
+
 fn drop_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
     commands.entity(player_query.single()).despawn_recursive();
 }
 
-fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>) {
+fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>, game_area: Res<GameArea>) {
     commands
-        .spawn_bundle(SpriteBundle {
-            texture: textures.texture_bevy.clone(),
-            transform: Transform::from_translation(Vec3::new(1., 0., 1.))
-                .with_scale(Vec3::new(0.2, 0.2, 1.)),
-            ..Default::default()
-        })
-        .insert(Player)
-        .insert(Speed(150.));
+        .spawn_bundle(PlayerBundle {
+            sprite_bundle: SpriteBundle {
+                transform: Transform::from_scale(Vec3::new(0.2, 0.2, 1.)).with_translation(
+                    (game_area.physical_pos() - Vec2::new(0., 0.25 * game_area.height)).extend(0.)
+                ),
+                texture: textures.player_texture.clone(),
+                ..default()
+            },
+            ..default()
+        });
 }
 
 fn move_player(
-    mut player_query: Query<(&mut Transform, &Handle<Image>, &Speed), With<Player>>,
+    mut player_query: Query<(&mut Transform, &Speed), With<Player>>,
     time: Res<Time>,
     actions: Res<Actions>,
-    images: Res<Assets<Image>>,
 ) {
     if actions.player_movement.is_none() {
         return;
     }
 
-    let (mut player_transform, texture, speed) = player_query.single_mut();
+    let (mut player_transform, speed) = player_query.single_mut();
 
     // Player movement
     let movement = Vec3::new(
@@ -57,27 +82,4 @@ fn move_player(
     );
 
     player_transform.translation += movement;
-
-    // Clamp player transform to game area size
-    let texture_size = images.get(texture).unwrap().texture_descriptor.size;
-
-    let player_size = Vec2::new(
-        texture_size.width as f32 * player_transform.scale.x.abs(),
-        texture_size.height as f32 as f32 * player_transform.scale.y.abs(),
-    );
-
-    // TODO: Put these values somewhere
-    let game_area = Vec2::new(300., 600.);
-
-    let bounding_box = Vec2::new(game_area.x - player_size.x, game_area.y - player_size.y);
-
-    player_transform.translation.x = player_transform
-        .translation
-        .x
-        .clamp(-bounding_box.x / 2.0, bounding_box.x / 2.0);
-
-    player_transform.translation.y = player_transform
-        .translation
-        .y
-        .clamp(-bounding_box.y / 2.0, bounding_box.y / 2.0);
 }

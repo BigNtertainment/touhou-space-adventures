@@ -2,6 +2,7 @@ mod actions;
 mod audio;
 mod character;
 mod enemy;
+mod game_area;
 mod loading;
 mod menu;
 mod player;
@@ -13,10 +14,14 @@ use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
 
+pub const WIDTH: f32 = 1280.;
+pub const HEIGHT: f32 = 720.;
+
 use bevy::app::App;
 #[cfg(debug_assertions)]
 use bevy::diagnostic::{FrameTimeDiagnosticsPlugin, LogDiagnosticsPlugin};
 use bevy::prelude::*;
+use game_area::GameAreaPlugin;
 
 // This example game uses States to separate logic
 // See https://bevy-cheatbook.github.io/programming/states.html
@@ -40,8 +45,9 @@ impl Plugin for GamePlugin {
             .add_plugin(MenuPlugin)
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)
-            .add_plugin(PlayerPlugin)
-            .add_plugin(EnemyPlugin);
+            .add_plugin(EnemyPlugin)
+            .add_plugin(GameAreaPlugin)
+            .add_plugin(PlayerPlugin);
 
         #[cfg(debug_assertions)]
         {
