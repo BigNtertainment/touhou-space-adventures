@@ -1,6 +1,5 @@
 use crate::actions::Actions;
 use crate::enemy::Enemy;
-use crate::game_area::{GameArea, GameAreaBound};
 use crate::game_area::{GameArea, GameAreaBound, GameAreaBoundLabel};
 use crate::loading::TextureAssets;
 use crate::GameState;
