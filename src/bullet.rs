@@ -54,10 +54,10 @@ fn fly(
 
 fn kill_enemy(
     mut commands: Commands,
-    bullet_query: Query<&Transform, With<Bullet>>,
+    bullet_query: Query<(Entity, &Transform), With<Bullet>>,
     enemies_query: Query<(&Transform, Entity), With<Enemy>>,
 ) {
-    for bullet_transform in &bullet_query {
+    for (bullet_entity, bullet_transform) in &bullet_query {
         for (enemy_transform, enemy_entity) in &enemies_query {
             if collide(
                 bullet_transform.translation,
@@ -68,6 +68,7 @@ fn kill_enemy(
             .is_some()
             {
                 commands.entity(enemy_entity).despawn_recursive();
+                commands.entity(bullet_entity).despawn_recursive();
             }
         }
     }
