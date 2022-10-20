@@ -81,6 +81,13 @@ fn spawn_waves_manager(mut commands: Commands) {
                             amplitude: 35.,
                         },
                     },
+                    EnemyData {
+                        spawn_position: Vec2::new(1., 1.),
+                        movement: EnemyMovement::Sin {
+                            speed: 150.,
+                            amplitude: 35.,
+                        },
+                    },
                 ],
                 timeout: 7.,
             },
