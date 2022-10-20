@@ -16,9 +16,7 @@ pub struct Speed(f32);
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(SystemSet::on_enter(GameState::Playing).with_system(spawn_player))
-            .add_system_set(SystemSet::on_update(GameState::Playing)
-                .with_system(move_player)
-            )
+            .add_system_set(SystemSet::on_update(GameState::Playing).with_system(move_player))
             .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(drop_player));
     }
 }
