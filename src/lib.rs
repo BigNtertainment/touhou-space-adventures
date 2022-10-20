@@ -4,6 +4,7 @@ mod debug;
 mod loading;
 mod menu;
 mod player;
+mod score;
 
 use crate::actions::ActionsPlugin;
 use crate::audio::InternalAudioPlugin;
@@ -11,6 +12,7 @@ use crate::debug::DebugPlugin;
 use crate::loading::LoadingPlugin;
 use crate::menu::MenuPlugin;
 use crate::player::PlayerPlugin;
+use crate::score::ScorePlugin;
 
 use bevy::app::App;
 #[cfg(debug_assertions)]
@@ -40,7 +42,8 @@ impl Plugin for GamePlugin {
             .add_plugin(ActionsPlugin)
             .add_plugin(InternalAudioPlugin)
             .add_plugin(PlayerPlugin)
-            .add_plugin(DebugPlugin);
+            .add_plugin(DebugPlugin)
+            .add_plugin(ScorePlugin);
 
         #[cfg(debug_assertions)]
         {
