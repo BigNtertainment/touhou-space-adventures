@@ -1,8 +1,7 @@
 use std::time::Duration;
 
 use crate::actions::Actions;
-use crate::bullet::{Bullet, BulletBundle};
-use crate::character::MoveSpeed;
+use crate::bullet::BulletBundle;
 use crate::enemy::Enemy;
 use crate::game_area::{GameArea, GameAreaBound, GameAreaBoundLabel};
 use crate::loading::TextureAssets;

@@ -33,7 +33,7 @@ impl GameArea {
     }
 
     pub fn relative_to_absolute(&self, relative: Vec2) -> Vec2 {
-        relative * Vec2::new(self.width, self.height) + self.physical_pos()
+        relative * Vec2::new(self.width, self.height) / 2. + self.physical_pos()
     }
 }
 

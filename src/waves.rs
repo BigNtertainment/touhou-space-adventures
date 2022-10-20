@@ -43,19 +43,19 @@ fn spawn_waves_manager(mut commands: Commands) {
         waves: vec![Wave {
             enemies: vec![
                 EnemyData {
-                    spawn_position: Vec2::new(-0.5, -1.),
+                    spawn_position: Vec2::new(-0.5, 1.),
                     movement: EnemyMovement::Vertical(VerticalEnemyMovement::default()),
                 },
                 EnemyData {
-                    spawn_position: Vec2::new(0., -1.),
+                    spawn_position: Vec2::new(0., 1.),
                     movement: EnemyMovement::Vertical(VerticalEnemyMovement::default()),
                 },
                 EnemyData {
-                    spawn_position: Vec2::new(0.5, -1.),
+                    spawn_position: Vec2::new(0.5, 1.),
                     movement: EnemyMovement::Vertical(VerticalEnemyMovement::default()),
                 },
             ],
-            timeout: 10.,
+            timeout: 7.,
         }],
         current: 0,
     });
@@ -83,15 +83,7 @@ fn spawn_waves(
             .texture_descriptor
             .size;
 
-        println!("Spawning enemies...");
-
         for enemy_data in &current_wave.enemies {
-            println!("{:?}", enemy_data);
-            println!(
-                "{:?}",
-                game_area.relative_to_absolute(enemy_data.spawn_position)
-            );
-
             commands
                 .spawn_bundle(EnemyBundle {
                     sprite_bundle: SpriteBundle {
