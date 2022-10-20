@@ -13,8 +13,15 @@ pub struct Player;
 impl Plugin for PlayerPlugin {
     fn build(&self, app: &mut App) {
         app.add_system_set(SystemSet::on_enter(GameState::Playing).with_system(spawn_player))
-            .add_system_set(SystemSet::on_update(GameState::Playing).with_system(move_player));
+            .add_system_set(SystemSet::on_update(GameState::Playing)
+                .with_system(move_player)
+            )
+            .add_system_set(SystemSet::on_exit(GameState::Playing).with_system(drop_player));
     }
+}
+
+fn drop_player(mut commands: Commands, player_query: Query<Entity, With<Player>>) {
+    commands.entity(player_query.single()).despawn_recursive();
 }
 
 fn spawn_player(mut commands: Commands, textures: Res<TextureAssets>) {
